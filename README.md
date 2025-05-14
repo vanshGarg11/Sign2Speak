@@ -1,4 +1,5 @@
 **# Sign2Speak**
+
 Sign2Speak is a Flask-based web application that recognizes American Sign Language (ASL) hand gestures via webcam or image input and converts them into spoken English using Text-to-Speech (TTS). It includes user authentication, gesture detection using MediaPipe and OpenCV, and a clean frontend interface with pages like Home, About, Contact, and ASL reference.
 
 📌 Features
