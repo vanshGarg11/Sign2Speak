@@ -30,48 +30,83 @@ Sign2Speak is a Flask-based web application that recognizes American Sign Langua
 ** Project Structure**
 
  Sign2Speak/
+ 
 │
+
 ├── app.py                  # Main Flask application
+
 ├── create_db.py           # Script to initialize the SQLite database
+
 │
 ├── templates/             # HTML templates
+
 │   ├── index.html
+
 │   ├── login.html
+
 │   ├── signup.html
+
 │   ├── demo.html
+
 │   ├── about.html
+
 │   ├── contact.html
+
 │   └── asl_reference.html
+
 │
+
 ├── static/                # Static files (CSS, JS, images)
+
 ├── uploads/               # Stores uploaded gesture images (if used)
+
 ├── instance/              # Contains SQLite database
+
 ├── archive/               # (Optional) Archived or experimental features
+
 ├── .venv/                 # Python virtual environment
+
 └── __pycache__/           # Compiled bytecode (auto-generated)
 
 
+
 **Setup Instructions**
+
 Clone the repository:
 
 bash
+
 Copy
+
 Edit
+
 git clone https://github.com/your-username/sign2speak.git
+
 cd sign2speak
+
 Create a virtual environment (optional but recommended):
 
 bash
+
 Copy
+
 Edit
+
 python -m venv .venv
+
 source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+
 Install dependencies:
 
+
 bash
+
 Copy
+
 Edit
+
 pip install -r requirements.txt
+
 Initialize the database:
 
 bash
