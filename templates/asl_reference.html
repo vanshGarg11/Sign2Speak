@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASL Reference - Sign2Speak</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #3a86ff;
+            --secondary-color: #ff006e;
+            --accent-color: #8338ec;
+            --success-color: #06d6a0;
+            --danger-color: #ef476f;
+            --dark-color: #212529;
+            --light-color: #f8f9fa;
+            --gray-color: #e9ecef;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --border-radius: 10px;
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f7fa;
+            color: var(--dark-color);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: linear-gradient(90deg, var(--dark-color) 0%, #2c3e50 100%);
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            margin-bottom: 0;
+        }
+
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white !important;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-link {
+            font-weight: 500;
+            transition: var(--transition);
+            padding: 8px 15px !important;
+            border-radius: 5px;
+            color: white !important;
+        }
+
+        .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .nav-link.active {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .page-header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 50px 0;
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('/api/placeholder/1200/300') center/cover no-repeat;
+            opacity: 0.15;
+            animation: slowZoom 30s infinite alternate;
+        }
+
+        @keyframes slowZoom {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.1); }
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            position: relative;
+            animation: slideInDown 1s ease-out;
+        }
+
+        .page-description {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            animation: slideInUp 1s ease-out;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+            font-weight: 700;
+            color: var(--dark-color);
+            position: relative;
+        }
+
+        .section-title:after {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 3px;
+            background: var(--primary-color);
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .gesture-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+            margin-bottom: 30px;
+            overflow: hidden;
+            height: 100%;
+            opacity: 0;
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+
+        .gesture-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .gesture-img-container {
+            height: 200px;
+            overflow: hidden;
+            background-color: #f8f9fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .gesture-img {
+            max-width: 100%;
+            max-height: 180px;
+            object-fit: contain;
+            transition: transform 0.5s ease;
+        }
+
+        .gesture-card:hover .gesture-img {
+            transform: scale(1.05);
+        }
+
+        .gesture-body {
+            padding: 20px;
+        }
+
+        .gesture-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+
+        .gesture-text {
+            color: #6c757d;
+            margin-bottom: 15px;
+        }
+
+        .usage-examples {
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+
+        .usage-examples h5 {
+            font-size: 1rem;
+            margin-bottom: 10px;
+            color: var(--dark-color);
+        }
+
+        .example-list {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .example-list li {
+            padding: 5px 0;
+            border-bottom: 1px solid #e9ecef;
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .example-list li:before {
+            content: '\f105';
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+            position: absolute;
+            left: 0;
+            color: var(--primary-color);
+        }
+
+        .example-list li:last-child {
+            border-bottom: none;
+        }
+
+        .tips-section {
+            background-color: #f0f7ff;
+            padding: 50px 0;
+            margin-top: 40px;
+        }
+
+        .tips-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 30px;
+            height: 100%;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tips-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .tips-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 0 40px 40px 0;
+            border-color: transparent var(--primary-color) transparent transparent;
+            transition: var(--transition);
+            opacity: 0;
+        }
+
+        .tips-card:hover::after {
+            opacity: 1;
+        }
+
+        .tips-title {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .tips-list {
+            padding-left: 20px;
+        }
+
+        .tips-list li {
+            margin-bottom: 10px;
+            position: relative;
+            padding-left: 5px;
+        }
+
+        .tips-list li::marker {
+            color: var(--primary-color);
+        }
+
+        .video-tutorial {
+            background-color: white;
+            padding: 50px 0;
+        }
+
+        .video-container {
+            position: relative;
+            overflow: hidden;
+            padding-top: 56.25%;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        .faq-section {
+            padding: 50px 0;
+            background-color: #f5f7fa;
+        }
+
+        .accordion-item {
+            margin-bottom: 15px;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            border: none;
+            box-shadow: var(--box-shadow);
+        }
+
+        .accordion-button {
+            font-weight: 600;
+            padding: 15px 20px;
+        }
+
+        .accordion-button:not(.collapsed) {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .accordion-body {
+            padding: 20px;
+            background-color: white;
+        }
+
+        footer {
+            background-color: #2c3e50;
+            color: #fff;
+            padding: 30px 0;
+            font-size: 0.9rem;
+        }
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: #ddd;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: #fff;
+        }
+
+        .social-icons {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-icons a {
+            color: #fff;
+            background-color: rgba(255, 255, 255, 0.1);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .social-icons a:hover {
+            background-color: var(--primary-color);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 20px;
+            margin-top: 20px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .gesture-card:nth-child(1) { animation-delay: 0.1s; }
+        .gesture-card:nth-child(2) { animation-delay: 0.2s; }
+        .gesture-card:nth-child(3) { animation-delay: 0.3s; }
+        .gesture-card:nth-child(4) { animation-delay: 0.4s; }
+        .gesture-card:nth-child(5) { animation-delay: 0.5s; }
+        .gesture-card:nth-child(6) { animation-delay: 0.6s; }
+
+        .floating-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: var(--primary-color);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            z-index: 99;
+            transition: all 0.3s ease;
+            animation: pulse 2s infinite;
+        }
+
+        .floating-btn:hover {
+            background-color: var(--accent-color);
+            transform: translateY(-5px);
+        }
+
+        /* Gesture demo animation */
+        .demo-animation {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.85);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 2;
+        }
+
+        .gesture-img-container:hover .demo-animation {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .demo-animation img {
+            max-width: 90%;
+            max-height: 90%;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-hand-paper me-2"></i>Sign2Speak
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/"><i class="fas fa-home me-1"></i>Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/about"><i class="fas fa-info-circle me-1"></i>About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/asl_reference"><i class="fas fa-book me-1"></i>ASL Reference</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/contact"><i class="fas fa-envelope me-1"></i>Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout"><i class="fas fa-sign-out-alt me-1"></i>Logout ({{ user }})</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <header class="page-header">
+        <div class="container">
+            <h1 class="page-title">ASL Reference Guide</h1>
+            <p class="page-description">Learn about the hand gestures recognized by our system and how to perform them correctly. This guide will help you get the most out of Sign2Speak's recognition technology.</p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <h2 class="section-title">Supported Gestures</h2>
+        
+        <div class="row">
+            <!-- Thumbs Up -->
+            <div class="col-md-4 mb-4">
+                <div class="gesture-card">
+                    <div class="gesture-img-container">
+                        <svg viewBox="0 0 200 200" class="gesture-img">
+                            <rect x="0" y="0" width="200" height="200" fill="#f8f9fa" />
+                            <path d="M95,55 C95,45 90,40 80,40 C70,40 65,45 65,55 L65,110 L55,110 C45,110 45,120 45,125 C45,135 55,135 65,135 L110,135 C120,135 130,125 130,115 C130,105 125,100 115,100 C115,90 110,85 100,85 C100,75 95,70 85,70 L85,55 C85,45 80,40 70,40" 
+                                  stroke="#3a86ff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M80,40 L80,110" stroke="#3a86ff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M95,70 L95,100" stroke="#3a86ff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M110,85 L110,115" stroke="#3a86ff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M65,110 L115,110" stroke="#3a86ff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <div class="demo-animation">
+                            <svg viewBox="0 0 200 200">
+                                <rect x="0" y="0" width="200" height="200" fill="#333" />
+                                <path d="M95,55 C95,45 90,40 80,40 C70,40 65,45 65,55 L65,110 L55,110 C45,110 45,120 45,125 C45,135 55,135 65,135 L110,135 C120,135 130,125 130,115 C130,105 125,100 115,100 C115,90 110,85 100,85 C100,75 95,70 85,70 L85,55 C85,45 80,40 70,40" 
+                                      stroke="#3a86ff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <animate attributeName="stroke" values="#3a86ff;#ff006e;#3a86ff" dur="2s" repeatCount="indefinite"/>
+                                </path>
+                                <path d="M80,40 L80,110" stroke="#3a86ff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <animate attributeName="stroke" values="#3a86ff;#ff006e;#3a86ff" dur="2s" repeatCount="indefinite"/>
+                                </path>
+                                <path d="M95,70 L95,100" stroke="#3a86ff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <animate attributeName="stroke" values="#3a86ff;#ff006e;#3a86ff" dur="2s" repeatCount="indefinite"/>
+                                </path>
+                                <path d="M110,85 L110,115" stroke="#3a86ff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <animate attributeName="stroke" values="#3a86ff;#ff006e;#3a86ff" dur="2s" repeatCount="indefinite"/>
+                                </path>
+                                <path d="M65,110 L115,110" stroke="#3a86ff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <animate attributeName="stroke" values="#3a86ff;#ff006e;#3a86ff" dur="2s" repeatCount="indefinite"/>
+                                </path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="gesture-body">
+                        <h3 class="gesture-title">Thumbs Up</h3>
+                        <p class="gesture-text">Make a fist with your hand and extend your thumb upward. This gesture is universally recognized as a positive affirmation.</p>
+                        
+                        <div class="usage-examples">
+                            <h5>Common Uses:</h5>
+                            <ul class="example-list">
+                                <li>Approval or agreement</li>
+                                <li>Positive feedback</li>
+                                <li>Confirmation</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Peace Sign -->
+            <div class="col-md-4 mb-4">
+                <div class="gesture-card">
+                    <div class="gesture-img-container">
+                        <svg viewBox="0 0 200 200" class="gesture-img">
+                            <rect x="0" y="0" width="200" height="200" fill="#f8f9fa" />
+                            <path d="M85,140 L85,70 C85,60 75,55 70,60 C65,65 65,70 70,75 L70,140" stroke="#3a86ff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M115,140 L115,70 C115,60 105,55 100,60 C95,65 95,70 100,75 L100,140" stroke="#3a86ff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M130,75 C130,60 125,50 115,50 C105,50 100,55 100,70" stroke="#3a86ff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M100,75 C100,60 95,50 85,50 C75,50 70,55 70,70" stroke="#3a86ff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M70,140 L70,140 C60,140 55,135 55,125 L55,90 C55,80 65,75 70,80 L70,140" stroke="#3a86ff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M130,90 C130,80 140,75 145,80 L145,125 C145,135 140,140 130,140 L70,140" stroke="#3a86ff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <div class="demo-animation">
+                            <svg viewBox="0 0 200 200">
+                                <rect x="0" y="0" width="200" height="200" fill="#333" />
+                                <path d="M85,140 L85,70 C85,60 75,55 70,60 C65,65 65,70 70,75 L70,140" stroke="#3a86ff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <animate attributeName="stroke" values="#3a86ff;#ff006e;#3a86ff" dur="2s" repeatCount="indefinite"/>
+                                </path>
+                                <path d="M115,140 L115,70 C115,60 105,55 100,60 C95,65 95,70 100,75 L100,140" stroke="#3a86ff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <animate attributeName="stroke" values="#3a86ff;#ff006e;#3a86ff" dur="2s" repeatCount="indefinite"/>
+                                </path>
+                                <path d="M130,75 C130,60 125,50 115,50 C105,50 100,55 100,70" stroke="#3a86ff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <animate attributeName="stroke" values="#3a86ff;#ff006e;#3a86ff" dur="2s" repeatCount="indefinite"/>
+                                </path>
+                                <path d="M100,75 C100,60 95,50 85,50 C75,50 70,55 70,70" stroke="#3a86ff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <animate attributeName="stroke" values="#3a86ff;#ff006e;#3a86ff" dur="2s" repeatCount="indefinite"/>
+                                </path>
+                                <path d="M70,140 L70,140 C60,140 55,135 55,125 L55,90 C55,80 65,75 70,80 L70,140" stroke="#3a86ff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <animate attributeName="stroke" values="#3a86ff;#ff006e;#3a86ff" dur="2s" repeatCount="indefinite"/>
+                                </path>
+                                <path d="M130,90 C130,80 140,75 145,80 L145,125 C145,135 140,140 130,140 L70,140" stroke="#3a86ff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <animate attributeName="stroke" values="#3a86ff;#ff006e;#3a86ff" dur="2s" repeatCount="indefinite"/>
+                                </path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="gesture-body">
+                        <h3 class="gesture-title">Peace Sign</h3>
+                        <p class="gesture-text">Extend your index and middle fingers while keeping the other fingers closed. Palm facing outward.</p>
+                        
+                        <div class="usage-examples">
+                            <h5>Common Uses:</h5>
+                            <ul class="example-list">
+                                <li>"Peace" or harmony</li>
+                                <li>Victory symbol</li>
+                                <li>Number two in some contexts</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Open Palm -->
+            <div class="col-md-4 mb-4">
+                <div class="gesture-card">
+                    <div class="gesture-img-container">
+                        <svg viewBox="0 0 200 200" class="gesture-img">
+                            <rect x="0" y="0" width="200" height="200" fill="#f8f9fa" />
+                            <path d="M60,130 L60,90 C60,80 50,75 45,80 C40,85 40,90 45,95 L45,130" stroke="#3a86ff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M80,130 L80,75 C80,65 70,60 65,65 C60,70 60,75 65,80 L65,130" stroke="#3a86ff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M100,130 L100,70 C100,60 90,55 85,60 C80,65 80,70 85,75 L85,130" stroke="#3a86ff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M120,130 L120,75 C120,65 110,60 105,65 C100,70 100,75 105,80 L105,130" stroke="#3a86ff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M140,130 L140,90 C140,80 130,75 125,80 C120,85 120,90 125,95 L125,130" stroke="#3a86ff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M45,130 C45,140 55,145 65,145 L120,145 C130,145 140,140 140,130" stroke="#3a86ff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <div class="demo-animation">
+                            <svg viewBox="0 0 200 200">
+                                <rect x="0" y="0" width="200" height="200" fill="#333" />
+                                <path d="M60,130 L60,90 C60,80 50,75 45,80 C40,85 40,90 45,95 L45,130" stroke="#3a86ff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <animate attributeName="stroke" values="#3a86ff;#ff006e;#3a86ff" dur="2s" repeatCount="indefinite"/>
+                                </path>
+                                <path d="M80,130 L80,75 C80,65 70,60 65,65 C60,70 60,75 65,80 L65,130" stroke="#3a86ff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <animate attributeName="stroke" values="#3a86ff;#ff006e;#3a86ff" dur="2s" repeatCount="indefinite"/>
+                                </path>
+                                <path d="M100,130 L100,70 C100,60 90,55 85,60 C80,65 80,70 85,75 L85,130" stroke="#3a86ff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <animate attributeName="stroke" values="#3a86ff;#ff006e;#3a86ff" dur="2s" repeatCount="indefinite"/>
+                                </path>
+                                <path d="M120,130 L120,75 C120,65 110,60 105,65 C100,70 100,75 105,80 L105,130" stroke="#3a86ff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <animate attributeName="stroke" values="#3a86ff;#ff006e;#3a86ff" dur="2s" repeatCount="indefinite"/>
+                                </path>
+                                <path d="M140,130 L140,90 C140,80 130,75 125,80 C120,85 120,90 125,95 L125,130" stroke="#3a86ff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <animate attributeName="stroke" values="#3a86ff;#ff006e;#3a86ff" dur="2s" repeatCount="indefinite"/>
+                                </path>
+                                <path d="M45,130 C45,140 55,145 65,145 L120,145 C130,145 140,140 140,130" stroke="#3a86ff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <animate attributeName="stroke" values="#3a86ff;#ff006e;#3a86ff" dur="2s" repeatCount="indefinite"/>
+                                </path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="gesture-body">
+                        <h3 class="gesture-title">Open Palm</h3>
+                        <p class="gesture-text">Extend all five fingers with your palm facing forward. Keep your fingers together or slightly spread.</p>
+                        
+                        <div class="usage-examples">
+                            <h5>Common Uses:</h5>
+                            <ul class="example-list">
+                                <li>Greeting or wave</li>
+                                <li>Stop gesture</li>
+                                <li>Number five</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Point -->
+            <div class="col-md-4 mb-4">
+                <div class="gesture-card">
+                    <div class="gesture-img-container">
+                        <svg viewBox="0 0 200 200" class="gesture-img">
+                            <rect x="0" y="0" width="200" height="200" fill="#f8f9fa" />
+                            <path d="M100,50 L100,140" stroke="#3a86ff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M80,140 L80,90 C80,80 70,75 65,80 C60,85 60,90 65,95 L65,140" stroke="#3a86ff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M120,140 L120,90 C120,80 110,75 105,80 C100,85 100,90 105,95 L105,140" stroke="#3a86ff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M140,100 C140,90 150,85 155,90 L155,125 C155,135 150,140 140,140 L65,140" stroke="#3a86ff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M65,140 L65,140 C55,140 50,135 50,125 L50,100 C50,90 60,85 65,90 L65,140" stroke="#3a86ff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M100,50 C110,50 115,55 115,65 L100,65" stroke="#3a86ff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M100,50 C90,50 85,55 85,65 L100,65" stroke="#3a86ff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <div class="demo-animation">
+                            <svg viewBox="0 0 200 200">
+                                <rect x="0" y="0" width="200" height="200" fill="#333" />
+                                <path d="M100,50 L100,140" stroke="#3a86ff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <animate attributeName="stroke" values="#3a86ff;#ff006e;#3a86ff" dur="2s" repeatCount="indefinite"/>
+                                </path>
+                                <path d="M80,140 L80,90 C80,80 70,75 65,80 C60,85 60,90 65,95 L65,140" stroke="#3a86ff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <animate attributeName="stroke" values="#3a86ff;#ff006e;#3a86ff" dur="2s" repeatCount="indefinite"/>
+                                </path>
+                                <path d="M120,140 L120,90 C120,80 110,75 105,80 C100,85 100,90 105,95 L105,140" stroke="#3a86ff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <animate attributeName="stroke" values="#3a86ff;#ff006e;#3a86ff" dur="2s" repeatCount="indefinite"/>
+                                </path>
+                                <path d="M140,100 C140,90 150,85 155,90 L155,125 C155,135 150,140 140,140 L65,140" stroke="#3a86ff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <animate attributeName="stroke" values="#3a86ff;#ff006e;#3a86ff" dur="2s" repeatCount="indefinite"/>
+                                </path>
+                                <path d="M65,140 L65,140 C55,140 50,135 50,125 L50,100 C50,90 60,85 65,90 L65,140" stroke="#3a86ff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <animate attributeName="stroke" values="#3a86ff;#ff006e;#3a86ff" dur="2s" repeatCount="indefinite"/>
+                                </path>
+                                <path d="M100,50 C110,50 115,55 115,65 L100,65" stroke="#3a86ff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <animate attributeName="stroke" values="#3a86ff;#ff006e;#3a86ff" dur="2s" repeatCount="indefinite"/>
+                                </path>
+                                <path d="M100,50 C90,50 85,55 85,65 L100,65" stroke="#3a86ff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <animate attributeName="stroke" values="#3a86ff;#ff006e;#3a86ff" dur="2s" repeatCount="indefinite"/>
+                                </path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="gesture-body">
+                        <h3 class="gesture-title">Point</h3>
+                        <p class="gesture-text">Extend your index finger forward while keeping all other fingers closed into a fist.</p>
+                        
+                        <div class="usage-examples">
+                            <h5>Common Uses:</h5>
+                            <ul class="example-list">
+                                <li>Indicating direction</li>
+                                <li>Highlighting something specific</li>
+                                <li>Number one</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- OK Sign -->
+            <div class="col-md-4 mb-4">
+                <div class="gesture-card">
+                    <div class="gesture-img-container">
+                        <svg viewBox="0 0 200 200" class="gesture-img">
+                            <rect x="0" y="0" width="200" height="200" fill="#f8f9fa" />
+                            <circle cx="85" cy="85" r="25" stroke="#3a86ff" stroke-width="6" fill="none"/>
+                            <path d="M110,85 L110,140" stroke="#3a86ff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M130,85 L130,140" stroke="#3a86ff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M150,95 L150,140" stroke="#3a86ff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M60,85 C60,60 70,50 85,50 C100,50 110,60 110,85" stroke="#3a86ff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M110,140 C110,145 105,150 100,150 L80,150 C75,150 70,145 70,140 L70,120" stroke="#3a86ff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <div class="demo-animation">
+                            <svg viewBox="0 0 200 200">
+                                <rect x="0" y="0" width="200" height="200" fill="#333" />
+                                <circle cx="85" cy="85" r="25" stroke="#3a86ff" stroke-width="6" fill="none">
+                                    <animate attributeName="stroke" values="#3a86ff;#ff006e;#3a86ff" dur="2s" repeatCount="indefinite"/>
+                                </circle>
+                                <path d="M110,85 L110,140" stroke="#3a86ff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <animate attributeName="stroke" values="#3a86ff;#ff006e;#3a86ff" dur="2s" repeatCount="indefinite"/>
+                                </path>
+                                <path d="M130,85 L130,140" stroke="#3a86ff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <animate attributeName="stroke" values="#3a86ff;#ff006e;#3a86ff" dur="2s" repeatCount="indefinite"/>
+                                </path>
+                                <path d="M150,95 L150,140" stroke="#3a86ff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <animate attributeName="stroke" values="#3a86ff;#ff006e;#3a86ff" dur="2s" repeatCount="indefinite"/>
+                                </path>
+                                <path d="M60,85 C60,60 70,50 85,50 C100,50 110,60 110,85" stroke="#3a86ff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <animate attributeName="stroke" values="#3a86ff;#ff006e;#3a86ff" dur="2s" repeatCount="indefinite"/>
+                                </path>
+                                <path d="M110,140 C110,145 105,150 100,150 L80,150 C75,150 70,145 70,140 L70,120" stroke="#3a86ff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <animate attributeName="stroke" values="#3a86ff;#ff006e;#3a86ff" dur="2s" repeatCount="indefinite"/>
+                                </path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="gesture-body">
+                        <h3 class="gesture-title">OK Sign</h3>
+                        <p class="gesture-text">Form a circle with your thumb and index finger, leaving the other fingers extended upward.</p>
+                        
+                        <div class="usage-examples">
+                            <h5>Common Uses:</h5>
+                            <ul class="example-list">
+                                <li>Affirmation or approval</li>
+                                <li>Indicating "perfect" or "just right"</li>
+                                <li>Acknowledgment</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Victory/Peace -->
+            <div class="col-md-4 mb-4">
+                <div class="gesture-card">
+                    <div class="gesture-img-container">
+                        <svg viewBox="0 0 200 200" class="gesture-img">
+                            <rect x="0" y="0" width="200" height="200" fill="#f8f9fa" />
+                            <path d="M85,140 L85,70 C85,60 75,55 70,60 C65,65 65,70 70,75 L70,140" stroke="#3a86ff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M115,140 L115,70 C115,60 105,55 100,60 C95,65 95,70 100,75 L100,140" stroke="#3a86ff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M130,75 C130,60 125,50 115,50 C105,50 100,55 100,70" stroke="#3a86ff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M100,75 C100,60 95,50 85,50 C75,50 70,55 70,70" stroke="#3a86ff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M70,140 L70,140 C60,140 55,135 55,125 L55,90 C55,80 65,75 70,80 L70,140" stroke="#3a86ff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M130,90 C130,80 140,75 145,80 L145,125 C145,135 140,140 130,140 L70,140" stroke="#3a86ff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <div class="demo-animation">
+                            <svg viewBox="0 0 200 200">
+                                <rect x="0" y="0" width="200" height="200" fill="#333" />
+                                <path d="M85,140 L85,70 C85,60 75,55 70,60 C65,65 65,70 70,75 L70,140" stroke="#3a86ff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <animate attributeName="stroke" values="#3a86ff;#ff006e;#3a86ff" dur="2s" repeatCount="indefinite"/>
+                                </path>
+                                <path d="M115,140 L115,70 C115,60 105,55 100,60 C95,65 95,70 100,75 L100,140" stroke="#3a86ff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <animate attributeName="stroke" values="#3a86ff;#ff006e;#3a86ff" dur="2s" repeatCount="indefinite"/>
+                                </path>
+                                <path d="M130,75 C130,60 125,50 115,50 C105,50 100,55 100,70" stroke="#3a86ff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <animate attributeName="stroke" values="#3a86ff;#ff006e;#3a86ff" dur="2s" repeatCount="indefinite"/>
+                                </path>
+                                <path d="M100,75 C100,60 95,50 85,50 C75,50 70,55 70,70" stroke="#3a86ff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <animate attributeName="stroke" values="#3a86ff;#ff006e;#3a86ff" dur="2s" repeatCount="indefinite"/>
+                                </path>
+                                <path d="M70,140 L70,140 C60,140 55,135 55,125 L55,90 C55,80 65,75 70,80 L70,140" stroke="#3a86ff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <animate attributeName="stroke" values="#3a86ff;#ff006e;#3a86ff" dur="2s" repeatCount="indefinite"/>
+                                </path>
+                                <path d="M130,90 C130,80 140,75 145,80 L145,125 C145,135 140,140 130,140 L70,140" stroke="#3a86ff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <animate attributeName="stroke" values="#3a86ff;#ff006e;#3a86ff" dur="2s" repeatCount="indefinite"/>
+                                </path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="gesture-body">
+                        <h3 class="gesture-title">Victory/Peace</h3>
+                        <p class="gesture-text">Form a "V" shape with your index and middle fingers while keeping other fingers closed. Palm faces outward.</p>
+                        
+                        <div class="usage-examples">
+                            <h5>Common Uses:</h5>
+                            <ul class="example-list">
+                                <li>Victory celebration</li>
+                                <li>Peace symbol</li>
+                                <li>Number two</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tips Section -->
+        <section class="tips-section">
+            <div class="container">
+                <h2 class="section-title">Tips for Better Recognition</h2>
+                
+                <div class="row">
+                    <div class="col-md-4 mb-4">
+                        <div class="tips-card">
+                            <h3 class="tips-title"><i class="fas fa-lightbulb me-2"></i>Lighting Matters</h3>
+                            <ul class="tips-list">
+                                <li>Use good, even lighting to maximize recognition accuracy.</li>
+                                <li>Avoid strong backlighting that creates shadows on your hands.</li>
+                                <li>Natural daylight or diffused artificial light works best.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4 mb-4">
+                        <div class="tips-card">
+                            <h3 class="tips-title"><i class="fas fa-hand-paper me-2"></i>Clear Gestures</h3>
+                            <ul class="tips-list">
+                                <li>Make deliberate, distinct gestures with clear hand positions.</li>
+                                <li>Hold the gesture steady for a moment for better recognition.</li>
+                                <li>Position your hand at an appropriate distance from the camera.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4 mb-4">
+                        <div class="tips-card">
+                            <h3 class="tips-title"><i class="fas fa-camera me-2"></i>Optimal Position</h3>
+                            <ul class="tips-list">
+                                <li>Center your hand in the camera frame.</li>
+                                <li>Keep your hand 1-2 feet away from the camera.</li>
+                                <li>Use a neutral background when possible.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Video Tutorial -->
+        <section class="video-tutorial">
+            <div class="container">
+                <h2 class="section-title">Video Tutorial</h2>
+                <div class="row">
+                    <div class="col-lg-8 mx-auto">
+                        <div class="video-container">
+                            <iframe src="/api/placeholder/560/315" title="ASL Tutorial Video" allowfullscreen></iframe>
+                        </div>
+                        <div class="text-center mt-4">
+                            <p class="text-muted">Watch our comprehensive tutorial to learn more about effective ASL gestures and how to maximize recognition accuracy.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- FAQ Section -->
+        <section class="faq-section">
+            <div class="container">
+                <h2 class="section-title">Frequently Asked Questions</h2>
+                
+                <div class="row">
+                    <div class="col-lg-8 mx-auto">
+                        <div class="accordion" id="faqAccordion">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingOne">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                        How accurate is the gesture recognition?
+                                    </button>
+                                </h2>
+                                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#faqAccordion">
+                                    <div class="accordion-body">
+                                        Our gesture recognition system achieves over 95% accuracy in good lighting conditions with clear gestures. The system continuously improves through machine learning as more users interact with it.
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingTwo">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                        Can I create custom gestures?
+                                    </button>
+                                </h2>
+                                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#faqAccordion">
+                                    <div class="accordion-body">
+                                        Yes! Premium users can create and save up to 10 custom gestures. Go to "Settings" > "Custom Gestures" to create your personalized hand signs and assign meanings to them.
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingThree">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                        Does the app work in low light?
+                                    </button>
+                                </h2>
+                                <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#faqAccordion">
+                                    <div class="accordion-body">
+                                        While the app can function in moderate lighting conditions, the best performance is achieved with good illumination. In very low light, the recognition accuracy may be reduced. We recommend using the app in well-lit environments for optimal results.
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingFour">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                                        Can I use this app for full ASL conversations?
+                                    </button>
+                                </h2>
+                                <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#faqAccordion">
+                                    <div class="accordion-body">
+                                        Currently, Sign2Speak recognizes individual gestures and basic signs rather than full ASL grammar and syntax. We're working on expanding our capabilities to include more complex sign sequences and grammatical structures in future updates.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <h5>Sign2Speak</h5>
+                    <p>Making communication accessible through innovative gesture recognition technology.</p>
+                    <ul class="social-icons">
+                        <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+                        <li><a href="#"><i class="fab fa-twitter"></i></a></li>
+                        <li><a href="#"><i class="fab fa-instagram"></i></a></li>
+                        <li><a href="#"><i class="fab fa-youtube"></i></a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-md-2 mb-4">
+                    <h5>Links</h5>
+                    <ul class="footer-links">
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/about">About</a></li>
+                        <li><a href="/asl_reference">ASL Reference</a></li>
+                        <li><a href="/blog">Blog</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-md-2 mb-4">
+                    <h5>Support</h5>
+                    <ul class="footer-links">
+                        <li><a href="/help">Help Center</a></li>
+                        <li><a href="/contact">Contact Us</a></li>
+                        <li><a href="/faq">FAQ</a></li>
+                        <li><a href="/tutorials">Tutorials</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-md-4 mb-4">
+                    <h5>Subscribe to Our Newsletter</h5>
+                    <p>Get the latest updates and news about Sign2Speak.</p>
+                    <form class="mt-3">
+                        <div class="input-group">
+                            <input type="email" class="form-control" placeholder="Enter your email">
+                            <button class="btn btn-primary" type="submit">Subscribe</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="text-center copyright">
+                <p>© 2025 Sign2Speak. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Floating button -->
+    <div class="floating-btn" data-bs-toggle="tooltip" data-bs-placement="left" title="Try Sign2Speak">
+        <i class="fas fa-hand-paper"></i>
+    </div>
+
+    <!-- Bootstrap and other scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize tooltips
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl)
+            });
+            
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>

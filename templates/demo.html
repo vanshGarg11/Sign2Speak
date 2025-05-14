@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hand Gesture Recognition - Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #0d1b33;
+            color: #ffffff;
+        }
+        
+        header {
+            background-color: #0a1528;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 1rem;
+        }
+        
+        nav ul li a {
+            color: #ffffff;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        
+        nav ul li a:hover {
+            background-color: #1a3059;
+        }
+        
+        nav ul li a.active {
+            background-color: #1e3b6d;
+        }
+        
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .demo-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+        
+        .description {
+            text-align: center;
+            max-width: 800px;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+            color: #c0c7d5;
+        }
+        
+        .camera-container {
+            position: relative;
+            width: 640px;
+            height: 480px;
+            background-color: #1e3b6d;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        #video-feed {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        
+        .controls {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        button {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background-color: #3182ce;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #2b6cb0;
+        }
+        
+        .btn-secondary {
+            background-color: #2d3748;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #1a202c;
+        }
+        
+        .results {
+            width: 100%;
+            max-width: 640px;
+            background-color: #1a2c4d;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .results h2 {
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #2d4a79;
+            padding-bottom: 0.5rem;
+        }
+        
+        .gesture-result {
+            display: flex;
+            justify-content: space-between;
+            padding: 1rem 0;
+            border-bottom: 1px solid #2d4a79;
+        }
+        
+        .gesture-name {
+            font-weight: bold;
+            color: #90cdf4;
+        }
+        
+        .confidence-bar {
+            width: 70%;
+            background-color: #2d3748;
+            height: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .confidence-fill {
+            height: 100%;
+            background-color: #3182ce;
+            transition: width 0.3s ease;
+        }
+        
+        .settings {
+            width: 100%;
+            max-width: 640px;
+            background-color: #1a2c4d;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .settings h2 {
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #2d4a79;
+            padding-bottom: 0.5rem;
+        }
+        
+        .settings-group {
+            margin-bottom: 1rem;
+        }
+        
+        .settings-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #c0c7d5;
+        }
+        
+        .settings-group select, .settings-group input {
+            width: 100%;
+            padding: 0.5rem;
+            border-radius: 5px;
+            border: 1px solid #2d4a79;
+            background-color: #2d3748;
+            color: white;
+        }
+        
+        .loading {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #3182ce;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .camera-container {
+                width: 100%;
+                height: auto;
+                aspect-ratio: 4/3;
+            }
+            
+            .results, .settings {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Overlay -->
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="logo">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M18 6L14 10L13 9L17 5L18 6Z" fill="white"/>
+                <path d="M8.5 15.5L5 19H19V18L8.5 15.5Z" fill="white"/>
+                <path d="M18 5C16.3 5 15 6.3 15 8C15 9.7 16.3 11 18 11C19.7 11 21 9.7 21 8C21 6.3 19.7 5 18 5ZM18 9C17.4 9 17 8.6 17 8C17 7.4 17.4 7 18 7C18.6 7 19 7.4 19 8C19 8.6 18.6 9 18 9Z" fill="white"/>
+                <path d="M11.28 15.7C11.28 15.7 9.35 15.13 7.54 16.1C5.72 17.08 4.49 18.95 4.49 18.95L6.02 19.74C6.02 19.74 7.01 18.24 8.4 17.5C9.8 16.75 11.28 15.7 11.28 15.7Z" fill="white"/>
+                <path d="M11.7 15.3C11.7 15.3 12.3 13.4 11.32 11.57C10.35 9.75 8.47 8.51 8.47 8.51L7.7 10.03C7.7 10.03 9.19 11.01 9.94 12.4C10.69 13.79 11.7 15.3 11.7 15.3Z" fill="white"/>
+            </svg>
+            Gesture Recognition
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#" class="active">Demo</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Documentation</a></li>
+                <li><a href="#">Login</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <div class="demo-container">
+            <h1>Gesture Recognition Demo</h1>
+            <p class="description">
+                Experience our advanced AI-powered hand gesture recognition in real-time. 
+                Position your hand in front of the camera and try different gestures to see the technology in action.
+            </p>
+
+            <div class="camera-container">
+                <video id="video-feed" autoplay playsinline></video>
+                <canvas id="overlay" class="overlay"></canvas>
+            </div>
+
+            <div class="controls">
+                <button id="start-btn" class="btn-primary">Start Camera</button>
+                <button id="capture-btn" class="btn-secondary" disabled>Capture Gesture</button>
+                <button id="reset-btn" class="btn-secondary" disabled>Reset</button>
+            </div>
+
+            <div class="results">
+                <h2>Recognition Results</h2>
+                <div id="results-container">
+                    <div class="gesture-result">
+                        <span class="gesture-name">Open Palm</span>
+                        <div class="confidence-bar">
+                            <div class="confidence-fill" style="width: 0%"></div>
+                        </div>
+                        <span class="confidence-value">0%</span>
+                    </div>
+                    <div class="gesture-result">
+                        <span class="gesture-name">Pointing</span>
+                        <div class="confidence-bar">
+                            <div class="confidence-fill" style="width: 0%"></div>
+                        </div>
+                        <span class="confidence-value">0%</span>
+                    </div>
+                    <div class="gesture-result">
+                        <span class="gesture-name">Peace Sign</span>
+                        <div class="confidence-bar">
+                            <div class="confidence-fill" style="width: 0%"></div>
+                        </div>
+                        <span class="confidence-value">0%</span>
+                    </div>
+                    <div class="gesture-result">
+                        <span class="gesture-name">Thumbs Up</span>
+                        <div class="confidence-bar">
+                            <div class="confidence-fill" style="width: 0%"></div>
+                        </div>
+                        <span class="confidence-value">0%</span>
+                    </div>
+                    <div class="gesture-result">
+                        <span class="gesture-name">Fist</span>
+                        <div class="confidence-bar">
+                            <div class="confidence-fill" style="width: 0%"></div>
+                        </div>
+                        <span class="confidence-value">0%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="settings">
+                <h2>Settings</h2>
+                <div class="settings-group">
+                    <label for="detection-threshold">Detection Threshold</label>
+                    <input type="range" id="detection-threshold" min="0" max="100" value="50">
+                </div>
+                <div class="settings-group">
+                    <label for="gesture-mode">Gesture Recognition Mode</label>
+                    <select id="gesture-mode">
+                        <option value="standard">Standard Mode</option>
+                        <option value="advanced">Advanced Mode</option>
+                        <option value="custom">Custom Mode</option>
+                    </select>
+                </div>
+                <div class="settings-group">
+                    <label for="camera-source">Camera Source</label>
+                    <select id="camera-source">
+                        <option value="user">Front Camera</option>
+                        <option value="environment">Back Camera</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // DOM Elements
+        const videoFeed = document.getElementById('video-feed');
+        const overlay = document.getElementById('overlay');
+        const startBtn = document.getElementById('start-btn');
+        const captureBtn = document.getElementById('capture-btn');
+        const resetBtn = document.getElementById('reset-btn');
+        const loadingOverlay = document.getElementById('loading');
+        const thresholdSlider = document.getElementById('detection-threshold');
+        const gestureModeSelect = document.getElementById('gesture-mode');
+        const cameraSourceSelect = document.getElementById('camera-source');
+        
+        // Canvas context for drawing hand tracking
+        const ctx = overlay.getContext('2d');
+        
+        // State variables
+        let streaming = false;
+        let mediaStream = null;
+        
+        // Confidence values for demo (would be replaced with actual AI predictions)
+        const gestureTypes = ['Open Palm', 'Pointing', 'Peace Sign', 'Thumbs Up', 'Fist'];
+        let confidenceValues = [0, 0, 0, 0, 0];
+        
+        // Start camera stream
+        startBtn.addEventListener('click', async () => {
+            loadingOverlay.style.display = 'flex';
+            
+            try {
+                // Get camera facing direction
+                const facingMode = cameraSourceSelect.value;
+                
+                // Request camera access
+                mediaStream = await navigator.mediaDevices.getUserMedia({
+                    video: { facingMode: facingMode }
+                });
+                
+                // Set video source
+                videoFeed.srcObject = mediaStream;
+                
+                // Set video dimensions
+                videoFeed.onloadedmetadata = () => {
+                    overlay.width = videoFeed.videoWidth;
+                    overlay.height = videoFeed.videoHeight;
+                    streaming = true;
+                    startBtn.disabled = true;
+                    captureBtn.disabled = false;
+                    resetBtn.disabled = false;
+                    
+                    // Start animation loop
+                    requestAnimationFrame(processFrame);
+                };
+            } catch (error) {
+                console.error('Error accessing camera:', error);
+                alert('Could not access the camera. Please ensure you have given permission.');
+            } finally {
+                loadingOverlay.style.display = 'none';
+            }
+        });
+        
+        // Capture current gesture (simulated)
+        captureBtn.addEventListener('click', () => {
+            // Simulate AI detection with random confidence values
+            simulateGestureDetection();
+            updateResults();
+        });
+        
+        // Reset everything
+        resetBtn.addEventListener('click', () => {
+            if (mediaStream) {
+                mediaStream.getTracks().forEach(track => track.stop());
+                videoFeed.srcObject = null;
+            }
+            
+            // Reset UI
+            streaming = false;
+            startBtn.disabled = false;
+            captureBtn.disabled = true;
+            resetBtn.disabled = true;
+            
+            // Clear canvas
+            ctx.clearRect(0, 0, overlay.width, overlay.height);
+            
+            // Reset results
+            confidenceValues = [0, 0, 0, 0, 0];
+            updateResults();
+        });
+        
+        // Process video frames
+        function processFrame() {
+            if (!streaming) return;
+            
+            // Clear previous drawings
+            ctx.clearRect(0, 0, overlay.width, overlay.height);
+            
+            // Simulate hand tracking by drawing random landmarks
+            if (Math.random() > 0.3) {
+                drawHandLandmarks();
+            }
+            
+            requestAnimationFrame(processFrame);
+        }
+        
+        // Draw simulated hand landmarks
+        function drawHandLandmarks() {
+            // Center point of hand
+            const centerX = overlay.width / 2 + (Math.random() * 100 - 50);
+            const centerY = overlay.height / 2 + (Math.random() * 100 - 50);
+            
+            // Draw palm
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, 20, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(65, 105, 225, 0.5)';
+            ctx.fill();
+            
+            // Draw fingers
+            for (let i = 0; i < 5; i++) {
+                const angle = (i * Math.PI / 2.5) - 0.5;
+                const length = 60 + Math.random() * 20;
+                
+                const endX = centerX + Math.cos(angle) * length;
+                const endY = centerY + Math.sin(angle) * length;
+                
+                // Draw finger
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY);
+                ctx.lineTo(endX, endY);
+                ctx.lineWidth = 8;
+                ctx.strokeStyle = 'rgba(65, 105, 225, 0.6)';
+                ctx.stroke();
+                
+                // Draw joints
+                for (let j = 1; j <= 3; j++) {
+                    const jointX = centerX + Math.cos(angle) * (length * j / 3);
+                    const jointY = centerY + Math.sin(angle) * (length * j / 3);
+                    
+                    ctx.beginPath();
+                    ctx.arc(jointX, jointY, 5, 0, Math.PI * 2);
+                    ctx.fillStyle = 'rgba(65, 105, 225, 0.8)';
+                    ctx.fill();
+                }
+            }
+        }
+        
+        // Simulate AI gesture detection
+        function simulateGestureDetection() {
+            // Get threshold value
+            const threshold = thresholdSlider.value / 100;
+            
+            // Generate random values and normalize them
+            const randomValues = gestureTypes.map(() => Math.random());
+            const total = randomValues.reduce((acc, val) => acc + val, 0);
+            
+            // Calculate normalized confidence values
+            confidenceValues = randomValues.map(val => {
+                // Apply threshold and normalization
+                let normalized = (val / total) * (1 + Math.random() * 0.2);
+                return normalized > threshold ? normalized : normalized * 0.3;
+            });
+        }
+        
+        // Update results display
+        function updateResults() {
+            const resultsContainer = document.getElementById('results-container');
+            resultsContainer.innerHTML = '';
+            
+            gestureTypes.forEach((type, index) => {
+                const confidence = confidenceValues[index] * 100;
+                const resultElement = document.createElement('div');
+                resultElement.className = 'gesture-result';
+                
+                resultElement.innerHTML = `
+                    <span class="gesture-name">${type}</span>
+                    <div class="confidence-bar">
+                        <div class="confidence-fill" style="width: ${confidence}%"></div>
+                    </div>
+                    <span class="confidence-value">${confidence.toFixed(1)}%</span>
+                `;
+                
+                resultsContainer.appendChild(resultElement);
+            });
+        }
+        
+        // Initialize results display
+        updateResults();
+        
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            if (streaming) {
+                overlay.width = videoFeed.videoWidth;
+                overlay.height = videoFeed.videoHeight;
+            }
+        });
+    </script>
+</body>
+</html>

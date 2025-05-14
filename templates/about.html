@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - Sign2Speak</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+     :root {
+          --primary-color: #4e6cef;
+          --secondary-color: #34c759;
+          --accent-color: #5856d6;
+          --success-color: #28a745;
+          --danger-color: #dc3545;
+          --dark-color: #2c2c2e;
+          --light-color: #f2f2f7;
+          --gray-color: #e9e9eb;
+          --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+          --border-radius: 8px;
+          --transition: all 0.3s ease;
+        }
+
+        body {
+          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+          background: linear-gradient(135deg, #f2f2f7 0%, #e5e5ea 100%);
+          color: var(--dark-color);
+          line-height: 1.6;
+          min-height: 100vh;
+          overflow-x: hidden;
+        }
+
+        .container {
+          max-width: 1100px;
+          padding: 20px;
+        }
+
+        .navbar {
+          background: linear-gradient(90deg, #2c3e50 0%, #1a2530 100%);
+          padding: 15px 0;
+          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+          margin-bottom: 40px;
+          position: relative;
+          z-index: 100;
+        }
+
+        .navbar-brand {
+          font-size: 1.5rem;
+          font-weight: 700;
+          color: white !important;
+          text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+          transition: var(--transition);
+        }
+
+        .navbar-brand:hover {
+          transform: scale(1.05);
+        }
+
+        .navbar-brand i {
+          transition: transform 0.4s ease;
+        }
+
+        .navbar-brand:hover i {
+          transform: rotate(20deg);
+        }
+
+        .nav-link {
+          font-weight: 500;
+          transition: var(--transition);
+          padding: 8px 15px !important;
+          border-radius: 5px;
+          color: white !important;
+          position: relative;
+        }
+
+        .nav-link:hover {
+          background-color: rgba(255, 255, 255, 0.1);
+          transform: translateY(-2px);
+        }
+
+        .nav-link.active {
+          background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .nav-link.active::after {
+          content: '';
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 100%;
+          height: 2px;
+          background-color: var(--secondary-color);
+          transform: scaleX(0);
+          transition: transform 0.3s ease;
+        }
+
+        .nav-link.active:hover::after {
+          transform: scaleX(1);
+        }
+
+        h1, h2 {
+          color: var(--dark-color);
+          font-weight: 700;
+          margin-bottom: 20px;
+          position: relative;
+        }
+
+        h1 {
+          font-size: 2.5rem;
+          display: inline-block;
+        }
+
+        h1:after {
+          content: '';
+          position: absolute;
+          width: 60%;
+          height: 3px;
+          background: var(--primary-color);
+          bottom: -10px;
+          left: 20%;
+          border-radius: 2px;
+          transition: width 0.6s ease;
+        }
+
+        h1:hover:after {
+          width: 100%;
+          left: 0;
+        }
+
+        .card {
+          border: none;
+          border-radius: var(--border-radius);
+          box-shadow: var(--box-shadow);
+          overflow: hidden;
+          transition: var(--transition);
+          margin-bottom: 30px;
+          position: relative;
+        }
+
+        .card:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .card::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 4px;
+          height: 0;
+          background: var(--primary-color);
+          transition: height 0.4s ease;
+        }
+
+        .card:hover::before {
+          height: 100%;
+        }
+
+        .card-header {
+          padding: 15px 20px;
+          font-weight: 600;
+          border: none;
+        }
+
+        .card-header.bg-primary {
+          background: linear-gradient(45deg, var(--primary-color), #7789f5) !important;
+          color: white;
+        }
+
+        .card-body {
+          padding: 25px;
+        }
+
+        .feature-icon {
+          font-size: 2.5rem;
+          color: var(--primary-color);
+          margin-bottom: 15px;
+          transition: transform 0.5s ease;
+        }
+
+        .feature-icon:hover {
+          transform: scale(1.2) rotate(10deg);
+        }
+
+        .team-member {
+          text-align: center;
+          margin-bottom: 30px;
+          transition: var(--transition);
+        }
+
+        .team-member:hover {
+          transform: translateY(-8px);
+        }
+
+        .team-member img {
+          width: 150px;
+          height: 150px;
+          border-radius: 50%;
+          object-fit: cover;
+          border: 5px solid white;
+          box-shadow: var(--box-shadow);
+          margin-bottom: 15px;
+          transition: all 0.5s ease;
+        }
+
+        .team-member:hover img {
+          transform: scale(1.05);
+          box-shadow: 0 8px 25px rgba(78, 108, 239, 0.4);
+          border-color: var(--primary-color);
+        }
+
+        .team-member h5 {
+          margin-bottom: 5px;
+          font-weight: 600;
+        }
+
+        .team-member .position {
+          color: #6c757d;
+          font-style: italic;
+          margin-bottom: 10px;
+        }
+
+        .social-icons a {
+          display: inline-block;
+          width: 35px;
+          height: 35px;
+          line-height: 35px;
+          background-color: var(--primary-color);
+          color: white;
+          border-radius: 50%;
+          margin: 0 5px;
+          transition: var(--transition);
+          transform: translateY(0);
+        }
+
+        .social-icons a:hover {
+          transform: translateY(-3px);
+          background-color: var(--accent-color);
+        }
+
+        .why-use-item {
+          padding: 20px;
+          border-radius: var(--border-radius);
+          background-color: white;
+          box-shadow: var(--box-shadow);
+          margin-bottom: 20px;
+          transition: var(--transition);
+          overflow: hidden;
+          position: relative;
+          z-index: 1;
+        }
+
+        .why-use-item::after {
+          content: '';
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 100%;
+          height: 3px;
+          background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+          transform: scaleX(0);
+          transform-origin: left;
+          transition: transform 0.4s ease;
+          z-index: -1;
+        }
+
+        .why-use-item:hover::after {
+          transform: scaleX(1);
+        }
+
+        .why-use-item:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .why-use-icon {
+          font-size: 2.8rem;
+          color: var(--primary-color);
+          margin-bottom: 15px;
+          transition: all 0.5s ease;
+        }
+
+        .why-use-item:hover .why-use-icon {
+          transform: scale(1.1) rotate(15deg);
+          color: var(--accent-color);
+        }
+
+        .list-group-item {
+          transition: var(--transition);
+          border-left: 0 solid var(--primary-color);
+        }
+
+        .list-group-item:hover {
+          border-left-width: 4px;
+          padding-left: calc(1.25rem - 4px);
+          background-color: rgba(78, 108, 239, 0.05);
+        }
+
+        footer {
+          background: linear-gradient(90deg, #2c3e50 0%, #1a2530 100%);
+        }
+
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        @keyframes fadeInLeft {
+          from {
+            opacity: 0;
+            transform: translateX(-30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+
+        @keyframes fadeInRight {
+          from {
+            opacity: 0;
+            transform: translateX(30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+
+        @keyframes pulse {
+          0% {
+            transform: scale(1);
+          }
+          50% {
+            transform: scale(1.05);
+          }
+          100% {
+            transform: scale(1);
+          }
+        }
+
+        @keyframes float {
+          0% {
+            transform: translateY(0px);
+          }
+          50% {
+            transform: translateY(-6px);
+          }
+          100% {
+            transform: translateY(0px);
+          }
+        }
+
+        .animate-fade-up {
+          animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        .animate-fade-left {
+          animation: fadeInLeft 0.6s ease-out forwards;
+        }
+
+        .animate-fade-right {
+          animation: fadeInRight 0.6s ease-out forwards;
+        }
+
+        .animate-pulse {
+          animation: pulse 2s infinite;
+        }
+
+        .animate-float {
+          animation: float 5s infinite ease-in-out;
+        }
+
+        .delay-1 {
+          animation-delay: 0.2s;
+        }
+
+        .delay-2 {
+          animation-delay: 0.4s;
+        }
+
+        .delay-3 {
+          animation-delay: 0.6s;
+        }
+
+        .delay-4 {
+          animation-delay: 0.8s;
+        }
+
+        .btn {
+          transition: all 0.3s ease;
+          border-radius: 30px;
+          padding: 8px 20px;
+        }
+
+        .btn:hover {
+          transform: translateY(-3px);
+          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary {
+          background: linear-gradient(45deg, var(--primary-color), #7789f5);
+          border: none;
+        }
+
+        .btn-outline-light {
+          border-width: 2px;
+        }
+
+        .btn-outline-light:hover {
+          background-color: rgba(255, 255, 255, 0.1);
+          color: white !important;
+        }
+        /* Footer styles */
+footer {
+  background: linear-gradient(90deg, #2c3e50 0%, #1a2530 100%);
+  color: white;
+  padding: 50px 0 20px;
+}
+
+footer h4, footer h5 {
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+footer .social-icons a {
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  line-height: 32px;
+  text-align: center;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+footer .social-icons a:hover {
+  background-color: var(--primary-color);
+  transform: translateY(-3px);
+}
+
+footer .list-unstyled li {
+  margin-bottom: 10px;
+}
+
+footer .list-unstyled a {
+  color: rgba(255, 255, 255, 0.6);
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+footer .list-unstyled a:hover {
+  color: white;
+  transform: translateX(3px);
+  display: inline-block;
+}
+
+/* FAQ section styles */
+.faq-item {
+  margin-bottom: 20px;
+}
+
+.faq-question {
+  font-weight: 600;
+  cursor: pointer;
+  padding: 15px;
+  background-color: var(--light-color);
+  border-radius: var(--border-radius);
+  position: relative;
+  transition: var(--transition);
+}
+
+.faq-question:hover {
+  background-color: var(--gray-color);
+}
+
+.faq-answer {
+  padding: 15px;
+  background-color: white;
+  border-radius: 0 0 var(--border-radius) var(--border-radius);
+  margin-top: -5px;
+  box-shadow: var(--box-shadow);
+}
+
+/* Mobile responsiveness adjustments */
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 2.5rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 1.2rem;
+  }
+  
+  .feature-card, .product-card, .testimonial-card {
+    margin-bottom: 20px;
+  }
+  
+  .cta-section {
+    padding: 40px 0;
+  }
+  
+  .cta-title {
+    font-size: 2rem;
+  }
+}
+
+/* Accessibility improvements */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Focus visible styles for better keyboard navigation */
+a:focus, button:focus {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (forced-colors: active) {
+  .btn, .card, .feature-card {
+    border: 1px solid;
+  }
+}
+
+/* Print styles */
+@media print {
+  .hero-section, .cta-section, footer {
+    background: none !important;
+    color: black !important;
+  }
+  
+  .navbar, .demo-container, .btn {
+    display: none !important;
+  }
+  
+  .container {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}
+
+/* Chatbot styles from index page */
+.chatbot {
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  width: 300px;
+  height: 400px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  display: none;
+  flex-direction: column;
+  z-index: 1000;
+  overflow: hidden;
+}
+
+.chatbot-header {
+  background: linear-gradient(90deg, #2c3e50 0%, #1a2530 100%);
+  color: white;
+  padding: 10px 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.chatbot-body {
+  flex-grow: 1;
+  padding: 10px;
+  overflow-y: auto;
+}
+
+.chatbot-input {
+  display: flex;
+  padding: 10px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.chatbot-input input {
+  flex-grow: 1;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  padding: 8px 15px;
+  margin-right: 10px;
+}
+
+.chatbot-input button {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 8px 15px;
+  cursor: pointer;
+}
+
+#open_chatbot {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: var(--primary-color);
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+  border: none;
+  z-index: 999;
+}
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-hand-paper me-2"></i>Sign2Speak
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/"><i class="fas fa-home me-1"></i>Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/about"><i class="fas fa-info-circle me-1"></i>About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/asl_reference"><i class="fas fa-book me-1"></i>ASL Reference</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/contact"><i class="fas fa-envelope me-1"></i>Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout"><i class="fas fa-sign-out-alt me-1"></i>Logout (Guest)</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 text-center mb-5 animate-fade-up">
+                <h1>About Our Project</h1>
+                <p class="lead">Sign Language Recognition Technology</p>
+            </div>
+        </div>
+
+        <div class="row mb-5">
+            <div class="col-md-12">
+                <div class="card animate-fade-up">
+                    <div class="card-header bg-primary">
+                        <h2 class="mb-0">Project Overview</h2>
+                    </div>
+                    <div class="card-body">
+                        <p>
+                           Project in B.E. at Chitkara University, we developed a Hand Gesture Recognition system that uses computer vision and machine learning to detect and classify hand gestures in real-time. This project allowed us to apply our knowledge of AI, computer vision, and software development to create a practical application.
+                        </p>
+                        
+                        <div class="row mt-4">
+                            <div class="col-md-4 text-center animate-fade-up delay-1">
+                                <div class="feature-icon animate-float">
+                                    <i class="fas fa-tachometer-alt"></i>
+                                </div>
+                                <h4>Real-time Processing</h4>
+                                <p>We optimized our algorithms to process webcam video at 20+ frames per second on standard laptop hardware.</p>
+                            </div>
+                            <div class="col-md-4 text-center animate-fade-up delay-2">
+                                <div class="feature-icon animate-float">
+                                    <i class="fas fa-brain"></i>
+                                </div>
+                                <h4>Machine Learning Model</h4>
+                                <p>We trained a convolutional neural network on a dataset of over 5,000 hand gesture images we collected ourselves.</p>
+                            </div>
+                            <div class="col-md-4 text-center animate-fade-up delay-3">
+                                <div class="feature-icon animate-float">
+                                    <i class="fas fa-expand-arrows-alt"></i>
+                                </div>
+                                <h4>Application Demo</h4>
+                                <p>We created a simple game controlled entirely by hand gestures to demonstrate the practical applications.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-5">
+            <div class="col-md-12">
+                <div class="card animate-fade-up delay-1">
+                    <div class="card-header bg-primary">
+                        <h2 class="mb-0">Why Use Hand Gesture Recognition</h2>
+                    </div>
+                    <div class="card-body">
+                        <p class="mb-4">Hand gesture recognition technology offers numerous benefits across various domains. Our project explores several key applications that make this technology particularly valuable:</p>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-4 animate-fade-left">
+                                <div class="why-use-item">
+                                    <div class="why-use-icon">
+                                        <i class="fas fa-universal-access"></i>
+                                    </div>
+                                    <h4>Accessibility</h4>
+                                    <p>Enables users with mobility impairments or those who cannot use traditional input devices to interact with computers and smart devices more easily.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6 mb-4 animate-fade-right">
+                                <div class="why-use-item">
+                                    <div class="why-use-icon">
+                                        <i class="fas fa-gamepad"></i>
+                                    </div>
+                                    <h4>Interactive Gaming</h4>
+                                    <p>Creates more immersive gaming experiences without requiring specialized hardware, using just a standard webcam for motion control.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6 mb-4 animate-fade-left delay-1">
+                                <div class="why-use-item">
+                                    <div class="why-use-icon">
+                                        <i class="fas fa-desktop"></i>
+                                    </div>
+                                    <h4>Touchless Interfaces</h4>
+                                    <p>Particularly valuable in public spaces, healthcare settings, or industrial environments where touching surfaces may be impractical or unhygienic.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6 mb-4 animate-fade-right delay-1">
+                                <div class="why-use-item">
+                                    <div class="why-use-icon">
+                                        <i class="fas fa-globe"></i>
+                                    </div>
+                                    <h4>Sign Language Translation</h4>
+                                    <p>Has potential to bridge communication gaps between deaf and hearing communities by automatically translating sign language gestures.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6 mb-4 animate-fade-left delay-2">
+                                <div class="why-use-item">
+                                    <div class="why-use-icon">
+                                        <i class="fas fa-vr-cardboard"></i>
+                                    </div>
+                                    <h4>Virtual Reality</h4>
+                                    <p>Enhances VR experiences by allowing for natural hand interactions within virtual environments without requiring controllers.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6 mb-4 animate-fade-right delay-2">
+                                <div class="why-use-item">
+                                    <div class="why-use-icon">
+                                        <i class="fas fa-chalkboard-teacher"></i>
+                                    </div>
+                                    <h4>Education</h4>
+                                    <p>Creates interactive learning experiences that can help students engage with content through physical movement and interaction.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-5">
+            <div class="col-md-12">
+                <div class="card animate-fade-up delay-2">
+                    <div class="card-header bg-primary">
+                        <h2 class="mb-0">Project Team</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4 animate-fade-up delay-1">
+                                <div class="team-member">
+                                    <img src="/api/placeholder/150/150" alt="Team Member">
+                                    <h5>Vansh Garg</h5>
+                                    <p class="position">Machine Learning Lead</p>
+                                    <div class="social-icons">
+                                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                                        <a href="#"><i class="fab fa-github"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 animate-fade-up delay-2">
+                                <div class="team-member">
+                                    <img src="/api/placeholder/150/150" alt="Team Member">
+                                    <h5>Tisha Sharma</h5>
+                                    <p class="position">Computer Vision Developer</p>
+                                    <div class="social-icons">
+                                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                                        <a href="#"><i class="fab fa-github"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 animate-fade-up delay-3">
+                                <div class="team-member">
+                                    <img src="/api/placeholder/150/150" alt="Team Member">
+                                    <h5>Shubham Kumar</h5>
+                                    <p class="position">Web Development & UI</p>
+                                    <div class="social-icons">
+                                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                                        <a href="#"><i class="fab fa-github"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 animate-fade-up delay-4">
+                                <div class="team-member">
+                                    <img src="/api/placeholder/150/150" alt="Team Member">
+                                    <h5>Sonali</h5>
+                                    <p class="position">Web Development & UI</p>
+                                    <div class="social-icons">
+                                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                                        <a href="#"><i class="fab fa-github"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card animate-fade-up delay-3">
+                    <div class="card-header bg-primary">
+                        <h2 class="mb-0">Technical Approach</h2>
+                    </div>
+                    <div class="card-body">
+                        <p>Our project combines several technologies and approaches to create an effective hand gesture recognition system:</p>
+                        
+                        <ul class="list-group list-group-flush mt-3">
+                            <li class="list-group-item animate-fade-left delay-1">
+                                <strong>Image Processing Pipeline</strong>
+                                <p class="mb-0">Using OpenCV for real-time video capture, hand region detection, and preprocessing</p>
+                            </li>
+                            <li class="list-group-item animate-fade-left delay-2">
+                                <strong>Neural Network Architecture</strong>
+                                <p class="mb-0">A modified ResNet architecture implemented in TensorFlow with custom layers for gesture classification</p>
+                            </li>
+                            <li class="list-group-item animate-fade-left delay-3">
+                                <strong>Web Interface</strong>
+                                <p class="mb-0">Frontend built with Bootstrap and JavaScript, backend using Flask to handle the ML model inference</p>
+                            </li>
+                            <li class="list-group-item animate-fade-left delay-4">
+                                <strong>Gesture Set</strong>
+                                <p class="mb-0">Currently recognizes 10 different hand gestures including numbers 0-5, thumbs up/down, and victory sign</p>
+                            </li>
+                        </ul>
+                        
+                        <div class="mt-4 animate-fade-up">
+                            <h5>Acknowledgements</h5>
+                            <p>We'd like to thank Professor Martinez for supervising this project and providing valuable guidance. Special thanks to the Computer Science Department for providing access to GPU computing resources for our model training.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-dark text-white mt-5 py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 animate-fade-up">
+                    <h5><i class="fas fa-hand-paper me-2"></i>Sign2Speak</h5>
+                    <p>Senior Project - Computer Science Department, Chitkara University</p>
+                </div>
+                <div class="col-md-3 animate-fade-up delay-1">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="/" class="text-white">Home</a></li>
+                        <li><a href="/about" class="text-white">About</a></li>
+                        <li><a href="/asl-reference" class="text-white">ASL Reference</a></li>
+                        <li><a href="/contact" class="text-white">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 animate-fade-up delay-2">
+                    <h5>Project Repository</h5>
+                    <div class="d-flex">
+                        <a href="#" class="text-white me-3"><i class="fab fa-github fa-lg"></i> GitHub</a>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-3 bg-light">
+            <div class="text-center animate-fade-up delay-3">
+                <p class="mb-0">&copy; 2025 Computer Science Senior Project. Chitkara University.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Animation trigger on scroll
+        document.addEventListener('DOMContentLoaded', function() {
+            // Function to check if an element is in viewport
+            function isInViewport(element) {
+                const rect = element.getBoundingClientRect();
+                return (
+                    rect.top <= (window.innerHeight || document.documentElement.clientHeight) &&
+                    rect.bottom >= 0
+                );
+            }
+            
+            // Handle animations on scroll
+            function handleScrollAnimations() {
+                const animatedElements = document.querySelectorAll('.animate-fade-up, .animate-fade-left, .animate-fade-right');
+                
+                animatedElements.forEach(element => {
+                    if (isInViewport(element) && !element.classList.contains('animated')) {
+                        element.classList.add('animated');
+                        element.style.visibility = 'visible';
+                        element.style.animationPlayState = 'running';
+                    }
+                });
+            }
+            
+            // Initial check for elements in viewport
+            handleScrollAnimations();
+            
+            // Check on scroll
+            window.addEventListener('scroll', handleScrollAnimations);
+            
+            // Navbar item hover effect
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                link.addEventListener('mouseenter', function() {
+                    this.querySelector('i')?.classList.add('fa-bounce');
+                });
+                
+                link.addEventListener('mouseleave', function() {
+                    this.querySelector('i')?.classList.remove('fa-bounce');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
